@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModHub</title>
+<link rel="stylesheet" href="hub.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="container">
+  <h1>ModHub</h1>
+  <nav><a href="admin.html">Admin Panel</a></nav>
+</header>
+
+<div class="container">
+  <div class="filters">
+    <button class="active" data-category="all">All</button>
+    <button data-category="mods">Mods</button>
+    <button data-category="guides">Guides</button>
+    <button data-category="assets">Assets</button>
+    <button data-category="tools">Tools</button>
+  </div>
+
+  <section id="downloads" class="grid"></section>
+</div>
+
+<script>
+let allItems = [];
+
+async function loadItems() {
+  const grid = document.getElementById('downloads');
+  try {
+    const res = await fetch('/api/items');
+    allItems = await res.json();
+    displayItems('all');
+  } catch(err) {
+    grid.innerHTML = '<p class="muted">Failed to load downloads.</p>';
+    console.error(err);
+  }
+}
+
+function displayItems(category) {
+  const grid = document.getElementById('downloads');
+  const items = category === 'all' ? allItems : allItems.filter(it => it.category === category);
+  if(!items.length) {
+    grid.innerHTML = '<p class="muted">No downloads available in this category.</p>';
+    return;
+  }
+  grid.innerHTML = items.map(it => `
+    <article class="card">
+      <div class="thumb">${it.title}</div>
+      <h3>${it.title}</h3>
+      <p class="muted">${it.desc || 'No description provided.'}</p>
+      <span class="badge">${it.category}</span>
+      <div class="actions">
+        <a class="btn" href="/files/${encodeURIComponent(it.filename)}" download>Download</a>
+      </div>
+    </article>
+  `).join('');
+}
+
+document.querySelectorAll('.filters button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    displayItems(btn.dataset.category);
+  });
+});
+
+loadItems();
+</script>
+</body>
+</html>

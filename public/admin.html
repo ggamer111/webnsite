@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - ModHub</title>
+<link rel="stylesheet" href="admin.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+  <!-- Header -->
+  <header>
+    <h1>Admin Panel</h1>
+    <a href="index.html" class="btn">← Back to Hub</a>
+    <button id="logoutBtn" class="btn logout-btn">Logout</button>
+  </header>
+
+  <!-- Toggle Mode Button -->
+  <div class="mode-toggle">
+    <button id="toggleModeBtn" class="btn upload-mode">Switch to Upload Mode</button>
+  </div>
+
+  <!-- Upload Form Card -->
+  <div class="upload-card" id="uploadCard" style="display:none;">
+    <form id="uploadForm">
+      <label for="title">Title</label>
+      <input id="title" name="title" placeholder="Enter file title" required>
+
+      <label for="category">Category</label>
+      <select id="category" name="category">
+        <option value="mods">Mods</option>
+        <option value="guides">Guides</option>
+        <option value="assets">Assets</option>
+        <option value="tools">Tools</option>
+      </select>
+
+      <label for="desc">Description</label>
+      <textarea id="desc" name="desc" placeholder="Enter a short description"></textarea>
+
+      <label for="file">File (zip, pdf, exe allowed)</label>
+      <input type="file" id="file" name="file" required>
+
+      <label>
+        <input type="checkbox" name="public" checked>
+        Make public immediately
+      </label>
+
+      <button type="submit" class="btn">Upload File</button>
+    </form>
+    <div id="status" class="muted"></div>
+  </div>
+
+  <!-- Uploaded Files Section -->
+  <h2 class="section-title">Uploaded Files</h2>
+  <div id="adminCards" class="grid"></div>
+
+  <!-- User Management Section (only visible to admin via JS) -->
+  <h2 class="section-title">User Management</h2>
+  <div id="userManagement" class="grid"></div>
+</div>
+
+<!-- Separate JS file -->
+<script src="admin.js"></script>
+</body>
+</html>
